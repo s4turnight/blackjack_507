@@ -26,6 +26,11 @@ public abstract class Card {
 	/**
 	 * 
 	 */
+	public abstract int getScore();
+	
+	/**
+	 * 
+	 */
 	public String toString(){
 		
 		String suitString;	// 
@@ -68,5 +73,12 @@ public abstract class Card {
 
 		BufferedImage img = ImageIO.read(imageFile);
 		return img;
+	}
+	
+	/**
+	 * @return int suit
+	 */
+	public int getSuit(){
+		return this.suit;
 	}
 }
