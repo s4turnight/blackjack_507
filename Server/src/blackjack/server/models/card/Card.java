@@ -20,13 +20,15 @@ public abstract class Card {
 	
 	public final static String IMAGE_FOLDER = "images/";
 	
+	/**
+	 * 
+	 */
 	protected int suit;
-	protected int value;
 	
 	/**
 	 * 
 	 */
-	public abstract int getScore();
+	protected int value;
 	
 	/**
 	 * 

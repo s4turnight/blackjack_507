@@ -2,22 +2,33 @@ package blackjack.server;
 
 import java.awt.Graphics;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import blackjack.remote.SessionInterface;
 import blackjack.server.models.card.BlackJackCard;
 import blackjack.server.models.card.Card;
 import blackjack.server.models.card.CardsSet;
+import blackjack.server.models.game.Session;
 
 public class Main {
 
 	/**
 	 * @param args
+	 * @throws RemoteException 
 	 */
-	public static void main(String[] args) {
-		
-		//test image
+	public static void main(String[] args) throws RemoteException {
+		SessionInterface session = new Session();
+		Registry registry = LocateRegistry.getRegistry();
+		registry.rebind("session", session);
+		System.out.println("Server start!");
+	}
+	
+	public static void testCardImage(){
 		final Card b = new BlackJackCard(2,3);
 		JFrame jf = new JFrame();
 		JPanel jp = new JPanel(){

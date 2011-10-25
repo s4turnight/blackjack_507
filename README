@@ -1,0 +1,17 @@
+Go to Server/bin in cmd/shell, input "start rmiregistry" (rmiregistry under jre/bin)
+run server Main.class
+run client Main.class
+
+Server:
+blackjack.server.remote: contains remote object interfaces, which are also included in client package
+blackjack.server.models.card: Card(abstract), BlackJackCard(for blackjack, new constuctor), CardSet (4 decks)
+blackjack.server.models.game: 
+	Session, which contains users and a static Game object
+	Game, which contains players (generated from users)
+	Player: hands (for each hand: a set of cards and bet)
+	Dealer: 
+	
+TODO: the relation among Player, Dealer and Hand should be further modified
+
+Client:
+remote interfaces and CallBack class

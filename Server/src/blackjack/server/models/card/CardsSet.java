@@ -3,9 +3,8 @@ package blackjack.server.models.card;
 import java.util.Random;
 
 /**
- * 
+ * This cardset is for the use of blackjack, 4 decks, and jokers not included
  * @author Jiawei Jiang
- * No jokers
  *
  */
 public class CardsSet {

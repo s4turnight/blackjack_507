@@ -25,11 +25,4 @@ public class BlackJackCard extends Card{
 		}
 		else throw new IllegalArgumentException("Invalid Card");
 	}
-
-	@Override
-	public int getScore() {
-		// TODO
-		// ace = 1 here, further consideration as 1 or 11 in score counter
-		return 0;
-	}
 }
