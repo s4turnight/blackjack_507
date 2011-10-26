@@ -7,7 +7,7 @@ import java.util.Random;
  * @author Jiawei Jiang
  *
  */
-public class CardsSet {
+public class CardPack {
 	
 	private Card[] cards;
 	private int currentIndex;
@@ -16,7 +16,7 @@ public class CardsSet {
 	 * @modifies cards, current index
 	 * @effects give values to cards array, set current index starting from 0
 	 */
-	public CardsSet(int numberOfDecks){
+	public CardPack(int numberOfDecks){
 		
 		cards = new Card[numberOfDecks * 52];
 		currentIndex = 0;

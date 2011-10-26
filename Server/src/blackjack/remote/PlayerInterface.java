@@ -10,12 +10,14 @@ import java.rmi.RemoteException;
  */
 public interface PlayerInterface extends Remote {
 	
-	public void betAct(int betAmount) throws RemoteException;
+	public void disconnect() throws RemoteException;
 	
-	public void standAct(int handIndex) throws RemoteException;
+	public void start(int betAmount) throws RemoteException;
 	
-	public void hitAct(int handIndex) throws RemoteException;
+	public void standAct() throws RemoteException;
 	
-	public void doubleAct(int handIndex) throws RemoteException;
+	public void hitAct() throws RemoteException;
+	
+	public void doubleAct() throws RemoteException;
 	
 }

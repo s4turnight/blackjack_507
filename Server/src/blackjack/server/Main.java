@@ -1,6 +1,7 @@
 package blackjack.server;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -12,8 +13,10 @@ import javax.swing.JPanel;
 import blackjack.remote.SessionInterface;
 import blackjack.server.models.card.BlackJackCard;
 import blackjack.server.models.card.Card;
-import blackjack.server.models.card.CardsSet;
+import blackjack.server.models.card.CardPack;
+import blackjack.server.models.game.Player;
 import blackjack.server.models.game.Session;
+import blackjack.server.models.game.events.SessionEventListener;
 
 public class Main {
 
@@ -26,7 +29,10 @@ public class Main {
 		Registry registry = LocateRegistry.getRegistry();
 		registry.rebind("session", session);
 		System.out.println("Server start!");
+	
 	}
+	
+
 	
 	public static void testCardImage(){
 		final Card b = new BlackJackCard(2,3);
@@ -45,7 +51,7 @@ public class Main {
 		
 		//test shuffling
 		int[] counters = new int[4];
-		CardsSet cs = new CardsSet(4);
+		CardPack cs = new CardPack(4);
 		cs.shuffle();
 		while(cs.hasNext()){
 			Card c = cs.next();

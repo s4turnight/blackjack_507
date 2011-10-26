@@ -16,7 +16,7 @@ public interface SessionInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public int connect(CallBackInterface callback, String name) throws RemoteException;
+	public PlayerInterface connect(CallBackInterface callback, String name) throws RemoteException;
 	
 	/**
 	 * Disconnect from the server session
@@ -24,7 +24,7 @@ public interface SessionInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public boolean disconnect(int playerIndex) throws RemoteException;
+//	public boolean disconnect(int playerIndex) throws RemoteException;
 	
 	/**
 	 * A player get ready for a new game, when all players get ready, new game start 
@@ -32,7 +32,5 @@ public interface SessionInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public void readyForGame(int playerIndex, int bet) throws RemoteException;
-
-
+//	public void readyForGame(int playerIndex) throws RemoteException;
 }

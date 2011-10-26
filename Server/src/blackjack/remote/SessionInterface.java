@@ -3,6 +3,8 @@ package blackjack.remote;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import blackjack.server.models.game.Player;
+
 
 /**
  * This interface defines the methods to be implemented in the Session remote class
@@ -16,15 +18,19 @@ public interface SessionInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public int connect(CallBackInterface callback, String name) throws RemoteException;
+	public PlayerInterface connect(CallBackInterface callback, String name) throws RemoteException;
 	
+	
+	// ******************************************************************************************
+	//  Old Design below
+	//******************************************************************************************	
 	/**
 	 * Disconnect from the server session
 	 * @param playerIndex
 	 * @return
 	 * @throws RemoteException
 	 */
-	public boolean disconnect(int playerIndex) throws RemoteException;
+//	public boolean disconnect(int playerIndex) throws RemoteException;
 	
 	/**
 	 * A player get ready for a new game, when all players get ready, new game start 
@@ -32,5 +38,5 @@ public interface SessionInterface extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public void readyForGame(int playerIndex) throws RemoteException;
+//	public void readyForGame(int playerIndex) throws RemoteException;
 }
