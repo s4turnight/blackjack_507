@@ -5,8 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import blackjack.remote.CallBackInterface;
+import blackjack.remote.PlayerInterface;
 import blackjack.remote.SessionInterface;
-import blackjack.server.models.game.events.SessionEventListener;
 
 /**
  * This class represents a game session between the server and multiple clients.
@@ -24,33 +24,30 @@ public class Session extends UnicastRemoteObject implements SessionInterface {
 	private static final long serialVersionUID = 2045109316660480758L;
 
 	// maximum number of players
-	private static final int MAX_PLAYER_NUM = 6;
+	private static final int MAX_PLAYER_NUM = 3;
 	
-	/**
-	 * Game (Singleton)
-	 */
+	// singleton instance
+	private static Session session = null;
+	
 	private Game game;
-	
-	private boolean gameStarted = false;
 	
 	/**
 	 * Array with fixed size, storing players or null, array index as seat number
 	 */
-	private Player[] players = new Player[MAX_PLAYER_NUM];
+	private PlayerInterface[] players = new PlayerInterface[MAX_PLAYER_NUM];
 	
 	//**********************************************************************************
 	// * Constructor
 	// *********************************************************************************
-	public Session() throws RemoteException {
+	private Session() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
-	//**********************************************************************************
-	// * Getters and Setters
-	// *********************************************************************************
-	public boolean isGameStarted() {
-		return gameStarted;
+	public static Session getInstance() throws RemoteException{
+		if(session == null){
+			return new Session();
+		}
+		else return session;
 	}
 
 	
@@ -58,26 +55,57 @@ public class Session extends UnicastRemoteObject implements SessionInterface {
 	// * Remote Methods
 	// ***********************************************************************************
 
-	/**
-	 * 
-	 */
 	@Override
-	public Player connect(CallBackInterface callback, String name)	throws RemoteException {
-		
+	public PlayerInterface connect(CallBackInterface callback, String name)	throws RemoteException {
+				
 		for(int i = 0; i < players.length; i++ ){
 			if(players[i] == null){
+				
+				//notify all: new player comes
+				for(PlayerInterface player: players){
+					if(player!=null){
+						((Player)player).getCallback().update("New Player "+name+" enters\n", this);
+					}
+				}
+				
+				// add that player
 				players[i] = new Player();
-				players[i].setId(i);
-				players[i].setName(name);
-				players[i].setCallback(callback);
-				System.out.println("Player " + name + " connected at "+ new java.util.Date());
-				players[i].addSessionEventListener(new MySessionEventListener());
+				((Player)players[i]).setId(i);
+				((Player)players[i]).setName(name);
+				((Player)players[i]).setCallback(callback);
+				
+				System.out.println(players[i].getName() + " connected at "+ new java.util.Date());
+				((Player)players[i]).addSessionEventListener(new MySessionEventListener());
+				
+				// return the player to the client, so that the client can invoke action methods from the player object
 				return players[i];
-			}
+			} 
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public String[] getNames() throws RemoteException {
+		String[] names = new String[MAX_PLAYER_NUM];
+		for(int i = 0; i<players.length; i++){
+			names[i] = (players[i]==null)? null : players[i].getName();
+		}
+		return names;
+	}
 
+	@Override
+	public int[] getAmounts() throws RemoteException {
+		int[] amounts = new int[MAX_PLAYER_NUM];
+		for(int i = 0; i<players.length; i++){
+			amounts[i] = (players[i]==null)? null : players[i].getAmount();
+		}
+		return amounts;
+	}
+	
+	public PlayerInterface[] getPlayers() throws RemoteException{
+		return this.players;
+	}
 
 	//**********************************************************************************
 	// * Listener Class
@@ -98,6 +126,7 @@ public class Session extends UnicastRemoteObject implements SessionInterface {
 			int id = player.getId();
 			String name = player.getName(); 
 			players[id] = null;
+
 			System.out.println(name +" has quit the game.");
 		}
 
@@ -105,15 +134,51 @@ public class Session extends UnicastRemoteObject implements SessionInterface {
 		 * This action will be fired when a remote player object's start(int bet) method is invoked
 		 * Set the player status "startGame" to true; 
 		 * Check then: if all player ready to start, start new game
+		 * @throws RemoteException 
 		 * @requires gameStarted == false
 		 * @modifies the player oject which fires the event, in the session
 		 * @effects player.startGame = true; if all player ready to start, start new game.
 		 */
 		@Override
-		public void playerStartedGame(ActionEvent e) {
-			// TODO Auto-generated method stub
+		public void playerStartedGame(ActionEvent e) throws RemoteException {
+
+			Player player = (Player)e.getSource();
+			player.setStarted(true);
 			
+			if(isAllPlayersReady()){
+				game = new Game(Session.this, players);
+				
+//				for(Player everyPlayer: players){
+//					everyPlayer.getCallback().notifyGameStart(null);
+//				}
+			}
 		}
+	}
+	
+	//**********************************************************************************
+	// * Internal methods
+	// ***********************************************************************************
+	
+	/**
+	 * @return true if all players clicked to start, false otherwise
+	 */
+	private boolean isAllPlayersReady(){
+		for(PlayerInterface player: players){
+			try {
+				if( (player!=null) && !player.isStarted()) return false;
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public PlayerInterface getDealer() throws RemoteException {
+		if(this.game!=null){
+			return this.game.getDealer();
+		}
+		else return null;
 	}
 
 	
@@ -140,7 +205,6 @@ public class Session extends UnicastRemoteObject implements SessionInterface {
 //
 //	@Override
 //	public void readyForGame(int playerIndex) throws RemoteException {
-//		// TODO Auto-generated method stub
 //		
 //	}
 }

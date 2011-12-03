@@ -3,7 +3,6 @@ package blackjack.remote;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-
 /**
  * This interface defines the methods to be implemented in the Session remote class
  * Objects exist on server, and methods to be invoked on client
@@ -18,6 +17,29 @@ public interface SessionInterface extends Remote {
 	 */
 	public PlayerInterface connect(CallBackInterface callback, String name) throws RemoteException;
 	
+	/**
+	 * Return all players' names in an int array
+	 * @return
+	 * @throws RemoteException
+	 */
+	public String[] getNames() throws RemoteException;
+	
+	/**
+	 * Return all players' amounts in an int array
+	 * @return
+	 * @throws RemoteException
+	 */
+	public int[] getAmounts() throws RemoteException;
+	
+	
+	public PlayerInterface[] getPlayers() throws RemoteException;
+	
+	public PlayerInterface getDealer() throws RemoteException;
+		
+	
+	// ******************************************************************************************
+	//  Old Design below
+	//******************************************************************************************	
 	/**
 	 * Disconnect from the server session
 	 * @param playerIndex

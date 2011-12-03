@@ -1,7 +1,6 @@
 package blackjack.server;
 
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -16,7 +15,6 @@ import blackjack.server.models.card.Card;
 import blackjack.server.models.card.CardPack;
 import blackjack.server.models.game.Player;
 import blackjack.server.models.game.Session;
-import blackjack.server.models.game.events.SessionEventListener;
 
 public class Main {
 
@@ -25,7 +23,8 @@ public class Main {
 	 * @throws RemoteException 
 	 */
 	public static void main(String[] args) throws RemoteException {
-		SessionInterface session = new Session();
+
+		SessionInterface session = Session.getInstance();
 		Registry registry = LocateRegistry.getRegistry();
 		registry.rebind("session", session);
 		System.out.println("Server start!");

@@ -12,11 +12,18 @@ import java.rmi.RemoteException;
 public interface CallBackInterface extends Remote {
 	
 	/**
-	 * Provide the initial cards and bets information of all players
+	 * Notify other players that a new player enters
 	 * @param bets
 	 * @throws RemoteException
 	 */
-	public void notifyGameStart(PlayerInterface[] players) throws RemoteException;
+	public void notifyNewPlayer(int id, String name) throws RemoteException;
+	
+	/**
+	 * Notify a player that new game starts
+	 * @param bets
+	 * @throws RemoteException
+	 */
+	public void notifyGameStart(PlayerInfoInterface[] playersinfo) throws RemoteException;
 	
 	/**
 	 * Let a player take turn to make decision 
@@ -29,12 +36,14 @@ public interface CallBackInterface extends Remote {
 	 * @param player
 	 * @throws RemoteException
 	 */
-	public void notifyMove(PlayerInterface player) throws RemoteException;
+	public void notifyMove(PlayerInfoInterface player) throws RemoteException;
 	
 	/**
 	 * Integer values could be either positive or negative
 	 * @throws RemoteException
 	 */
 	public void notifyGameResult(int[] amountWin) throws RemoteException;
+	
+	public void update(String message, SessionInterface session) throws RemoteException;
 
 }

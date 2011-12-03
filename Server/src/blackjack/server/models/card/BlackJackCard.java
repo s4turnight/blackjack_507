@@ -25,4 +25,11 @@ public class BlackJackCard extends Card{
 		}
 		else throw new IllegalArgumentException("Invalid Card");
 	}
+	
+	public int getPoint(){
+		if( value < 10 ){
+			return value;
+		}
+		else return 10;
+	}
 }

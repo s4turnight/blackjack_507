@@ -33,6 +33,11 @@ public abstract class Card {
 	/**
 	 * 
 	 */
+	public boolean visible = true;
+	
+	/**
+	 * 
+	 */
 	public String toString(){
 		
 		String suitString;	// 
@@ -82,5 +87,30 @@ public abstract class Card {
 	 */
 	public int getSuit(){
 		return this.suit;
+	}
+	
+	public int getValue(){
+		return this.value;
+	}
+	
+	public boolean isVisible(){
+		return this.visible;
+	}
+	
+	/**
+	 * Make the card into integer array to communicate with client
+	 * @return
+	 */
+	public int[] toIntArray(){
+		int[] intArray = new int[2];
+		if(this.visible){
+			intArray[0] = this.getSuit();
+			intArray[1] = this.getValue();
+		}
+		else{
+			intArray[0] = -1;
+			intArray[1] = -1;
+		}
+		return intArray;
 	}
 }
